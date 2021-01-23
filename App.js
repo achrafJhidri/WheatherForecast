@@ -5,6 +5,7 @@ import { ApplicationProvider, IconRegistry, Layout } from '@ui-kitten/components
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
 import { Button, Icon } from '@ui-kitten/components';
+import { SafeAreaView } from 'react-native';
 
 const FacebookIcon = (props) => (
   <Icon name='facebook' {...props} />
@@ -16,6 +17,8 @@ export const LoginButton = () => (
 
     <LoginButton/>
 
+  <SafeAreaView style={{flex : 1}}>
     <IconRegistry icons={EvaIconsPack} />
     <ApplicationProvider {...eva} theme={eva.dark}>
     </ApplicationProvider>
+    </SafeAreaView>
