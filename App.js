@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
+import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry, Layout } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
@@ -16,3 +17,5 @@ export const LoginButton = () => (
     <LoginButton/>
 
     <IconRegistry icons={EvaIconsPack} />
+    <ApplicationProvider {...eva} theme={eva.dark}>
+    </ApplicationProvider>
