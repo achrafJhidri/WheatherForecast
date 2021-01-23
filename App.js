@@ -1,21 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ApplicationProvider, IconRegistry, Layout } from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+import { Button, Icon } from '@ui-kitten/components';
+
+const FacebookIcon = (props) => (
+  <Icon name='facebook' {...props} />
   );
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export const LoginButton = () => (
+  <Button accessoryLeft={FacebookIcon}>Login with Facebook</Button>
+);
+
+    <LoginButton/>
+
+    <IconRegistry icons={EvaIconsPack} />
