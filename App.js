@@ -1,24 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry, Layout } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 
-import { Button, Icon } from '@ui-kitten/components';
-import { SafeAreaView } from 'react-native';
 
-const FacebookIcon = (props) => (
-  <Icon name='facebook' {...props} />
-  );
+import { SafeAreaView, StatusBar } from 'react-native';
+import {AppNavigator} from './src/navigation/navigation.component'
 
-export const LoginButton = () => (
-  <Button accessoryLeft={FacebookIcon}>Login with Facebook</Button>
-);
 
-    <LoginButton/>
-
+export default () => (
+  <>
   <SafeAreaView style={{flex : 1}}>
     <IconRegistry icons={EvaIconsPack} />
     <ApplicationProvider {...eva} theme={eva.dark}>
+      <AppNavigator/>
     </ApplicationProvider>
-    </SafeAreaView>
+  </SafeAreaView>
+  <StatusBar/>
+  </>
+);
