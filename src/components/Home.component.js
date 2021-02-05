@@ -18,26 +18,22 @@ export const HomeScreen = ({ route, navigation }) => {
   const [error, setError] = useState({ isError: false, message: null });
   const [storedLocations, setStoredLocations] = useState([]);
   const [displayedLocation, setDisplayedLocation] = useState(null);
-  const [forecast, setForecast] = useState(null);
+  const [forecast, setForecast] = useState({});
 
   const navigateToFavorits = () => {
     navigation.navigate("Favorits");
   };
   const addToFavoritPlaces = () => {
-
-    let  result = [displayedLocation, ...storedLocations];
+    let result = [displayedLocation, ...storedLocations];
     storeData("localisations", JSON.stringify(result));
     setStoredLocations(result);
   };
-
- 
 
   useEffect(() => {
     if (route.params) {
       setError({ isError: false, message: "" });
       const location = route.params.coordinates;
       setDisplayedLocation(location); //this will trigger wheather api Call
-
     } else {
       getActualLocation()
         .then((location) => {
@@ -50,25 +46,20 @@ export const HomeScreen = ({ route, navigation }) => {
   }, [route.params]);
 
   useEffect(() => {
-
     getWheatherByCoords(displayedLocation)
       .then((result) => {
-    
         setForecast(result);
       })
       .catch((error) => {
-        handleError(error.message);
       });
-}, [displayedLocation]);
+  }, [displayedLocation]);
 
   useEffect(() => {
     if (storedLocations.length > 0) {
       setError({ isError: false, message: "" });
       setDisplayedLocation(storedLocations[0]);
-
     }
   }, [storedLocations]);
-
 
 
   const getStoredLocation = async () => {
@@ -113,7 +104,7 @@ export const HomeScreen = ({ route, navigation }) => {
     removeValue("localisations");
   };
   const displayWheather = () => {
-        <Text> {JSON.stringify(forecast)}</Text>;
+    return <Text> {JSON.stringify(forecast)}</Text>;
   };
   const renderError = () => {
     if (error.isError) return <DisplayError message={error.message} />;
