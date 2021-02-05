@@ -8,7 +8,12 @@ import { getLocationByName, getActualLocation } from "../api/geoLocation";
 import MapView, { Marker } from "react-native-maps";
 
 import { DisplayError } from "./DisplayError.component";
+import { getWheatherByCityName } from "../api/wheatherApi";
 
+const latitudeDelta = 0.0922;
+const longitudeDelta = 0.00411;
+const latitudeDeltaZoomed = 2.0522;
+const longitudeDeltaZoomed = 2.0321;
 export const SearchScreen = ({ navigation }) => {
   const [entry, setEntry] = useState("");
 
@@ -18,56 +23,68 @@ export const SearchScreen = ({ navigation }) => {
 
   const search = async () => {
     if (entry !== "") {
-      //if(loc is activated)
       getLocationByName(entry)
         .then((result) => {
           if (result.length >= 1) {
             let points = [];
             result.forEach((value) => {
               const { latitude, longitude } = value;
-
               points.push({
                 latitude,
                 longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.00411,
+                latitudeDelta,
+                longitudeDelta,
               });
             });
             setMultiPoints(points);
-
             mapRef.current.animateToRegion(points[0], 2000);
           } else {
             setError({ isError: true, message: "adresse non trouvée" });
           }
-          //else
-          // call wheather APi and go directly to Home with the City Name and wheater data
         })
         .catch((error) => {
-          setError({ isError: true, message: error.message });
+          getWheatherByCityName(entry)
+            .then((result) => {
+              if (result) {
+                const { lat, lon } = result.coord;
+                let point = {
+                  latitude: lat,
+                  longitude: lon,
+                  latitudeDelta,
+                  longitudeDelta,
+                };
+
+                setMultiPoints([point]);
+                mapRef.current.animateToRegion(point, 2000);
+              }
+            })
+            .catch((error) => {
+              setError({ isError: true, message: "adresse non trouvée" });
+            });
         });
     }
   };
 
   useEffect(() => {
-      //if the localisation and permission is okey
-      getActualLocation().then((result) => {
+    getActualLocation()
+      .then((result) => {
         const { latitude, longitude } = result;
 
         mapRef.current.animateToRegion(
           {
             latitude,
             longitude,
-            latitudeDelta: 2.0522,
-            longitudeDelta: 2.0321,
+            latitudeDelta: latitudeDeltaZoomed,
+            longitudeDelta: longitudeDeltaZoomed,
           },
           2000
         );
       })
-      .catch (error => {
-      // setError({ isError: true, message: error.message });
-    })
-
+      .catch((error) => {
+        // do nothing 
+      });
   }, []);
+
   const renderSearchIcon = (props) => {
     props = { ...props, onPress: search };
     return assets.icons.searchIcon(props);
