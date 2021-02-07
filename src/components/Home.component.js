@@ -120,7 +120,7 @@ export const HomeScreen = ({ route, navigation }) => {
     <SafeAreaView style={{ flex: 1 }}>
       <TopNavigation
         title="Wheather forcast"
-        alignment="left"
+        alignment="center"
         accessoryRight={SearchIcon}
       />
       <Divider />
