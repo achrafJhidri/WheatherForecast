@@ -15,18 +15,18 @@ const longitudeDelta = 0.00411;
 const latitudeDeltaZoomed = 2.0522;
 const longitudeDeltaZoomed = 2.0321;
 export const SearchScreen = ({ navigation }) => {
-  const [entry, setEntry] = useState("");
-
-  const [multiPoints, setMultiPoints] = useState([]);
   const [error, setError] = useState({ isError: false, message: null });
-  const mapRef = useRef(null);
+
+  const [entry, setEntry] = useState("");
+  const [multiPoints, setMultiPoints] = useState([]); //sometimes you'll get more than one result for example Paris in france & Paris in Texas
+  const mapRef = useRef(null); 
 
   const search = async () => {
     if (entry !== "") {
-      getLocationByName(entry)
+      let points = [];
+      await getLocationByName(entry) //this try to resolve the request using Localisation
         .then((result) => {
-          if (result.length >= 1) {
-            let points = [];
+          if (result.length >= 1) { 
             result.forEach((value) => {
               const { latitude, longitude } = value;
               points.push({
@@ -36,37 +36,41 @@ export const SearchScreen = ({ navigation }) => {
                 longitudeDelta,
               });
             });
-            setMultiPoints(points);
-            mapRef.current.animateToRegion(points[0], 2000);
           } else {
             setError({ isError: true, message: "adresse non trouvée" });
           }
         })
-        .catch((error) => {
-          getWheatherByCityName(entry)
+        .catch(async (error) => { // if Localisation is not enabled or the app doesn't have the permission to use it
+          await getWheatherByCityName(entry) //here it's used only to get the coordinates 
+                                             //but you can use it to show some info on the marker 
+                                             //contact me if you want some help
+                                             // or see <Marker> you can put here what ever you want maybe the same listItem you use in favorit</Marker>
             .then((result) => {
-              if (result) {
+              if (result) { //if you save this result inside a variable you can use it inside the markers
+                            //console.log(result) and use what you want
                 const { lat, lon } = result.coord;
-                let point = {
+                points.push({
                   latitude: lat,
                   longitude: lon,
                   latitudeDelta,
                   longitudeDelta,
-                };
-
-                setMultiPoints([point]);
-                mapRef.current.animateToRegion(point, 2000);
+                });
               }
             })
             .catch((error) => {
               setError({ isError: true, message: "adresse non trouvée" });
             });
         });
+      setMultiPoints(points);//saving the search result
+      mapRef.current.animateToRegion(points[0], 2000); // animate to the first result
     }
   };
 
   useEffect(() => {
-    getActualLocation()
+    // if localisation is enabled
+    // this will center the map on your location
+    // if not it does nothing
+    getActualLocation() 
       .then((result) => {
         const { latitude, longitude } = result;
 
@@ -81,7 +85,7 @@ export const SearchScreen = ({ navigation }) => {
         );
       })
       .catch((error) => {
-        // do nothing 
+        // do nothing
       });
   }, []);
 
@@ -121,7 +125,6 @@ export const SearchScreen = ({ navigation }) => {
   };
 
   const navigateToHome = (coordinates) => {
-    //if t
     navigation.navigate("Home", {
       coordinates,
     });
@@ -135,7 +138,9 @@ export const SearchScreen = ({ navigation }) => {
           key={index}
           coordinate={value}
           onPress={() => navigateToHome(value)}
-        />
+        >
+         {/*listItem  */}
+        </Marker>
       );
     });
     return tab;
@@ -155,8 +160,8 @@ export const SearchScreen = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      {renderViewMap()}
-      {displaySearch()}
+      {renderViewMap() /*render the map in the background */}
+      {displaySearch()/* render  the search Input on the top of the map*/}
       {renderError()}
     </SafeAreaView>
   );

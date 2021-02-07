@@ -1,10 +1,16 @@
 import React from "react";
 import { Icon } from "@ui-kitten/components";
 
+
+//Clear the not used icon's when you finish
+
 const sunIcon = (props) => <Icon {...props} name="sun" />;
 const HomeIcon = (props) => <Icon {...props} name="home" />;
-const pinOutline = (props) => <Icon {...props} name="pin" />;
 const locationIcon = (props) => <Icon {...props} name="compass" />;
+
+
+
+const pinOutline = (props) => <Icon {...props} name="pin" />;
 const favoriteIcon = (props) => <Icon {...props} name="heart" />;
 
 const searchIcon = (props) => <Icon {...props} name="search" />;

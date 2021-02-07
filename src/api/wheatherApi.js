@@ -1,7 +1,7 @@
 const ApiKey = "17e330397fee8a55928ef4dcba378607"
 const oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall"
 const currentWheather = "https://api.openweathermap.org/data/2.5/weather?"
-const imageUrl = " http://openweathermap.org/img/w/ de +.png"
+const imageUrl = " http://openweathermap.org/img/w/ {imageName.png}"
 
 
 export const getWheatherByCoords = async ({longitude,latitude}) => {

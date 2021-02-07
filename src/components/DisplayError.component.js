@@ -5,7 +5,7 @@ import {  StyleSheet } from "react-native";
 
 
 
-  
+
 export const DisplayError = ({ message = "Une erreur s'est produite" }) => (
   <Layout style={styles.container}>
     <Text style={styles.errorText}>

@@ -16,11 +16,12 @@ import { getWheatherByCoords } from "../api/wheatherApi";
 
 export const HomeScreen = ({ route, navigation }) => {
   const [error, setError] = useState({ isError: false, message: null });
-  const [storedLocations, setStoredLocations] = useState([]);
+  const [storedLocations, setStoredLocations] = useState([]); //this is the content you should share in the store 
+                                                              //so that you have the list of favorit locations to show in FavoritScreen
   const [displayedLocation, setDisplayedLocation] = useState(null);
-  const [forecast, setForecast] = useState({});
+  const [forecast, setForecast] = useState(null); //the wheatherApi results are here /!\ it's async so use a Spinner 
 
-  const navigateToFavorits = () => {
+  const navigateToFavorits = () => { 
     navigation.navigate("Favorits");
   };
   const addToFavoritPlaces = () => {
@@ -30,46 +31,50 @@ export const HomeScreen = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    if (route.params) {
+    if (route.params) { //if we come from the SearchScreen
       setError({ isError: false, message: "" });
       const location = route.params.coordinates;
       setDisplayedLocation(location); //this will trigger wheather api Call
-    } else {
-      getActualLocation()
+    } else { // when loading the app
+      getActualLocation() 
         .then((location) => {
           setDisplayedLocation(location); //this will trigger wheather api Call
         })
-        .catch(async (error) => {
-          await getStoredLocation();
+        .catch(async (error) => { //if the localisation is not authorized
+          await getStoredLocation(); //search in the device's storage 
         });
     }
-  }, [route.params]);
+  }, [route.params]); 
 
   useEffect(() => {
-    getWheatherByCoords(displayedLocation)
+    getWheatherByCoords(displayedLocation) //this is triggered whenever displayedLocation is set
+                                           // so the page refresh and show the good result
       .then((result) => {
-        setForecast(result);
+        setForecast(result); 
       })
       .catch((error) => {
+        //do nothing
+        // you probably going to catch this error, but this is caused by the state of
+        // displayedLocation, when this function is called displayedLocation is not ready yet
+        // use a spinner as a workarround
       });
   }, [displayedLocation]);
 
   useEffect(() => {
     if (storedLocations.length > 0) {
       setError({ isError: false, message: "" });
-      setDisplayedLocation(storedLocations[0]);
+      setDisplayedLocation(storedLocations[0]); 
     }
   }, [storedLocations]);
 
-
   const getStoredLocation = async () => {
-    await getData("localisations")
+    await getData("localisations") 
       .then((tab) => {
         let result = JSON.parse(tab);
-        setStoredLocations(result);
+        setStoredLocations(result);//this will trigger wheather api call 
       })
-      .catch((error) => {
-        handleError(
+      .catch((error) => { //you'll get here if => Localisation is not authorized 
+        handleError(  // this will redirect to SearchScreen 
           "location is not available  & no saved location => redirection in 3s"
         );
       });
@@ -94,7 +99,8 @@ export const HomeScreen = ({ route, navigation }) => {
         icon={assets.icons.searchIcon}
         onPress={navigateToFavorits}
       />
-      <TopNavigationAction
+      <TopNavigationAction  //this one should be removed for the moment, it's used only to clean the array of storedLocations when testing the app
+                            // maybe you should move it to favoritScreen 
         icon={assets.icons.pinOutline}
         onPress={deleteStored}
       />
@@ -103,8 +109,8 @@ export const HomeScreen = ({ route, navigation }) => {
   const deleteStored = () => {
     removeValue("localisations");
   };
-  const displayWheather = () => {
-    return <Text> {JSON.stringify(forecast)}</Text>;
+  const displayWheather = () => { //here's the view you have to customize
+    return <Text> {JSON.stringify(forecast)}</Text>; 
   };
   const renderError = () => {
     if (error.isError) return <DisplayError message={error.message} />;
@@ -114,7 +120,7 @@ export const HomeScreen = ({ route, navigation }) => {
     <SafeAreaView style={{ flex: 1 }}>
       <TopNavigation
         title="Wheather forcast"
-        alignment="center"
+        alignment="left"
         accessoryRight={SearchIcon}
       />
       <Divider />
