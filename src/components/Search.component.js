@@ -18,7 +18,9 @@ export const SearchScreen = ({ navigation }) => {
   const [error, setError] = useState({ isError: false, message: null });
 
   const [entry, setEntry] = useState("");
-  const [multiPoints, setMultiPoints] = useState([]); //sometimes you'll get more than one result for example Paris in france & Paris in Texas
+  const [multiPoints, setMultiPoints] = useState([]);
+  const [serachResult, setSearchResult] = useState("");
+  //sometimes you'll get more than one result for example Paris in france & Paris in Texas
   const mapRef = useRef(null); 
 
   const search = async () => {
@@ -47,7 +49,7 @@ export const SearchScreen = ({ navigation }) => {
                                              // or see <Marker> you can put here what ever you want maybe the same listItem you use in favorit</Marker>
             .then((result) => {
               if (result) { //if you save this result inside a variable you can use it inside the markers
-                            //console.log(result) and use what you want
+                 //and use what you want
                 const { lat, lon } = result.coord;
                 points.push({
                   latitude: lat,
