@@ -11,7 +11,7 @@ import { assets } from "../definitions/assets";
 import { getActualLocation } from "../api/geoLocation";
 import { getData, removeValue, storeData } from "../storage/storage";
 import { DisplayError } from "./DisplayError.component";
-import { Details } from "./Details.compenent";
+import  Details  from "./Details.compenent";
 import { getWheatherByCoords } from "../api/wheatherApi";
 
 export const HomeScreen = ({ route, navigation }) => {
@@ -54,6 +54,7 @@ export const HomeScreen = ({ route, navigation }) => {
   }, [route.params]);
 
   useEffect(() => {
+    
     getWheatherByCoords(displayedLocation) //this is triggered whenever displayedLocation is set
       // so the page refresh and show the good result
       .then((result) => {
@@ -74,11 +75,16 @@ export const HomeScreen = ({ route, navigation }) => {
     }
   }, [storedLocations]);
 
+  useEffect(()=> {
+    console.log(forecast)
+  }, [forecast])
+
   const getStoredLocation = async () => {
     await getData("localisations")
       .then((tab) => {
         let result = JSON.parse(tab);
-        setStoredLocations(result); //this will trigger wheather api call
+        setStoredLocations(result);
+        console.log("setstored") //this will trigger wheather api call
       })
       .catch((error) => {
         //you'll get here if => Localisation is not authorized
@@ -108,6 +114,8 @@ export const HomeScreen = ({ route, navigation }) => {
         icon={assets.icons.searchIcon}
         onPress={navigateToSearch}
       />
+
+
       {/* <TopNavigationAction //this one should be removed for the moment, it's used only to clean the array of storedLocations when testing the app
         // maybe you should move it to favoritScreen
         icon={assets.icons.pinOutline}
@@ -120,6 +128,8 @@ export const HomeScreen = ({ route, navigation }) => {
   };
   const displayWheather = () => {
     //here's the view you have to customize
+/*     if (!forecast) return <Text>Loading</Text>;
+ */    
     return (
       
         <Details data={forecast} />

@@ -17,7 +17,7 @@ const days = [
 
 const renderPrevision = ({ item }) => (
   <View style={{ flexDirection: "row", alignItems: 'center' }}>
-    <Text style={{ flex: 1, color: "white" }}>{item.id}</Text>
+    <Text style={{ flex: 1, color: "black" }}>{item.id}</Text>
     <View style={{ flex: 1 }}>
        <Image
       style={{ width: 35, height: 35 }}
@@ -29,15 +29,15 @@ const renderPrevision = ({ item }) => (
     <View style={{ flex: 2 }}>
       <View style={{ flexDirection: "row", justifyContent:'space-between' }}>
         <View style={{ flexDirection: "row" }}>
-          <Umbrella stroke="white" />
+          <Umbrella stroke="black" />
           <Text>{item.humidity}% </Text>
         </View>
         <View style={{ flexDirection: "row" }}>
-          <ArrowDown stroke="white" />
+          <ArrowDown stroke="black" />
           <Text>{Math.round(item.min)}°C</Text>
         </View>
         <View style={{ flexDirection: "row" }}>
-          <ArrowUp stroke="white" />
+          <ArrowUp stroke="black" />
           <Text>{Math.round(item.max)}°C</Text>
         </View>
       </View>

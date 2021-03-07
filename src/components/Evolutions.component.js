@@ -2,28 +2,24 @@ import React from "react";
 import { View, Text, FlatList, Image } from "react-native";
 import { useEffect, useState } from "react";
 import { Button, Icon } from "@ui-kitten/components";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { ChevronRight, ChevronLeft } from "react-native-feather";
 
 const Intl = require("react-native-intl");
 const imageUrl = "http://openweathermap.org/img/wn/";
 
-const rightArrow = (props) => (
-  <Icon {...props} width={48} height={48} name="arrow-ios-forward-outline" />
-);
 
-const leftArrow = (props) => (
-  <Icon {...props} width={48} height={48} name="arrow-ios-back-outline" />
-);
 
 const ItemEvolution = ({ item }) => (
   <View style={{ alignItems: "center" }}>
-    <Text style={{ color: "white" }}>{item.id}</Text>
+    <Text style={{ color: "black" }}>{item.id}</Text>
     <Image
       style={{ width: 50, height: 50 }}
       source={{
         uri: imageUrl + item.icon + ".png",
       }}
     />
-    <Text style={{ color: "white" }}>{Math.round(item.temp)}°C</Text>
+    <Text style={{ color: "black" }}>{Math.round(item.temp)}°C</Text>
   </View>
 );
 
@@ -36,7 +32,7 @@ export const Evolutions = ({ data, timezone }) => {
     if (Array.isArray(data)) {
       const res = data.slice(0, 24).map((element) => {
         var obj = {};
-        obj.id = new Date((element.dt+timezone) * 1000)
+        obj.id = new Date((element.dt + timezone) * 1000)
           .toLocaleTimeString("fr-FR", {
             hour: "2-digit",
             minute: "2-digit",
@@ -55,38 +51,14 @@ export const Evolutions = ({ data, timezone }) => {
     return weathers.slice(startIndex, startIndex + 4);
   };
 
-  const onForward = async () => {
+  const onForward =  () => {
     if (startIndex + 5 <= weathers.length) {
-      await setStartIndex(startIndex + 1);
+       setStartIndex(startIndex + 1);
     }
   };
 
-  const displayLeftArrow = () => {
-    if (startIndex === 0)
-      return (
-        <Button
-          appearance="ghost"
-          size="tiny"
-          onPress={onBack}
-          accessoryLeft={leftArrow}
-        />
-      );
-  };
-
-  const displayRightArrow = () => {
-    if (startIndex + 4 == weathers.length)
-      return (
-        <Button
-          appearance="ghost"
-          size="tiny"
-          onPress={onForward}
-          accessoryLeft={rightArrow}
-        />
-      );
-  };
-
   const onBack = () => {
-    setStartIndex(startIndex - 1);
+    if (startIndex > 0) setStartIndex(startIndex - 1);
   };
 
   if (weathers.length > 0)
@@ -100,15 +72,22 @@ export const Evolutions = ({ data, timezone }) => {
             //alignSelf: "center",
           }}
         >
-         {/*  {displayLeftArrow} */}
-          <Button
+          {/*  {displayLeftArrow} */}
+          {/* <Button
             appearance="ghost"
             size="tiny"
             onPress={onBack}
             accessoryLeft={leftArrow}
             disabled={startIndex === 0}
 
-          />
+          /> */}
+          <TouchableWithoutFeedback onPress={() => onBack()}>
+            <ChevronLeft
+              stroke={startIndex > 0 ? "black" : "grey"}
+              width={42}
+              height={42}
+            />
+          </TouchableWithoutFeedback>
           <FlatList
             horizontal
             data={weatherToShow()}
@@ -119,14 +98,14 @@ export const Evolutions = ({ data, timezone }) => {
               flex: 1,
             }}
           />
-          <Button
-            appearance="ghost"
-            size="tiny"
-            onPress={onForward}
-            accessoryLeft={rightArrow}
-            disabled={startIndex + 4  == weathers.length}
 
-          />
+          <TouchableWithoutFeedback onPress={() => onForward()}>
+            <ChevronRight
+              stroke={startIndex + 4 < weathers.length ? "black" : "grey"}
+              width={42}
+              height={42}
+            />
+          </TouchableWithoutFeedback>
           {/*   {displayRightArrow} */}
         </View>
       </View>

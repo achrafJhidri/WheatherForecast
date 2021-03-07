@@ -44,8 +44,8 @@ export const getAddressByCoordinates = async (location ) => {
   try {
     checkPermission();
 
-    let adderss = await Location.reverseGeocodeAsync(location)
-    console.log(adderss);
+    let adderss = await Location.reverseGeocodeAsync(location);
+
     return adderss;
   } catch (error) {
     throw error;

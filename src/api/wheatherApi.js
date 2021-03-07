@@ -4,11 +4,11 @@ const currentWheather = "https://api.openweathermap.org/data/2.5/weather?";
 
 import { getAddressByCoordinates } from "./geoLocation";
 export const getWheatherByCoords = async ({ longitude, latitude }) => {
-  const location = await getAddressByCoordinates({
-    longitude: longitude,
-    latitude: latitude,
-  });
   try {
+    const location = await getAddressByCoordinates({
+      longitude: longitude,
+      latitude: latitude,
+    });
     const response = await fetch(
       oneCallUrl +
         "?lat=" +
@@ -19,7 +19,9 @@ export const getWheatherByCoords = async ({ longitude, latitude }) => {
         ApiKey
     );
     const json = await response.json();
-    json.city = location[0].city;
+    const city = location[0].city !== null ? location[0].city : location[0].subregion === null ? location[0].region : location[0].subregion ;
+    const fullnameCity = city + ", "+ location[0].country;
+    json.city = {id:fullnameCity, lon: longitude, lat: latitude}
     return json;
   } catch (error) {
     throw error;

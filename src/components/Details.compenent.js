@@ -1,92 +1,129 @@
 import React from "react";
-import { ImageBackground } from "react-native";
-import { Text, Layout, Card, List } from "@ui-kitten/components";
-import { StyleSheet, View } from "react-native";
+import { Text, Layout, Card, List, Icon, Button } from "@ui-kitten/components";
+import { StyleSheet, View, TouchableWithoutFeedback } from "react-native";
 import {
   ArrowDown,
   ArrowUp,
   Cloud,
   Droplet,
+  Heart,
   Umbrella,
   Wind,
 } from "react-native-feather";
+import { connect } from "react-redux";
+import { assets } from "../definitions/assets";
 
 import { Evolutions } from "./Evolutions.component";
 
 import { PrecipitationGraph } from "./PrecipitationsGraph.components";
 import { Previsions } from "./Previsions.component";
+import { useEffect, useState } from "react/cjs/react.development";
 
-const Header = (data) => (
-  <View>
-    <Text category="h6">{data.city}</Text>
-    <Text category="s2">
-      {data.current.weather[0].description}, {Math.round(data.current.temp)}°C
-    </Text>
+const Details = ({ data, favCities, dispatch }) => {
+  const [forecast, setForecast] = useState(null);
+
+  const Header = () => (
     <View style={{ flexDirection: "row" }}>
-      <View style={{ flexDirection: "row" }}>
-        <ArrowDown stroke="white" />
-        <Text>{Math.round(data.daily[0].temp.min)}°C</Text>
+      <View>
+        <Text category="h6">{forecast.city.id}</Text>
+        <Text category="s2">
+          {forecast.current.weather[0].description},{" "}
+          {Math.round(forecast.current.temp)}
+          °C
+        </Text>
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row" }}>
+            <ArrowDown stroke="black" />
+            <Text>{Math.round(forecast.daily[0].temp.min)}°C</Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <ArrowUp stroke="black" />
+            <Text>{Math.round(forecast.daily[0].temp.max)}°C</Text>
+          </View>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row" }}>
+            <Wind stroke="black" />
+            <Text>{Math.round(forecast.current.wind_speed)}km/h</Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Umbrella stroke="black" />
+            <Text>{forecast.current.humidity}% </Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Cloud stroke="black" />
+            <Text>{Math.round(forecast.current.clouds)}% </Text>
+          </View>
+        </View>
       </View>
-      <View style={{ flexDirection: "row" }}>
-        <ArrowUp stroke="white" />
-        <Text>{Math.round(data.daily[0].temp.max)}°C</Text>
+      <View>
+        <TouchableWithoutFeedback onPress={()=>toggleFav()}>
+          <Heart fill={isFav() ? "black" : "white"} stroke="black"  width={42} height={42} />
+        </TouchableWithoutFeedback>
       </View>
     </View>
-    <View style={{ flexDirection: "row" }}>
-      <View style={{ flexDirection: "row" }}>
-        <Wind stroke="white" />
-        <Text>{Math.round(data.current.wind_speed)}km/h</Text>
-      </View>
-      <View style={{ flexDirection: "row" }}>
-        <Umbrella stroke="white" />
-        <Text>{data.current.humidity}% </Text>
-      </View>
-      <View style={{ flexDirection: "row" }}>
-        <Cloud stroke="white" />
-        <Text>{Math.round(data.current.clouds)}% </Text>
-      </View>
-    </View>
-  </View>
-);
+  );
 
-export const Details = ({ data }) => {
-  if (!data) return <Text>Loading</Text>;
+  useEffect(() => {
+    if (data) setForecast(data);
+  }, [data]);
+
+  const toggleFav = () => {
+    console.log("toggleFav")
+    if (isFav()) {
+      console.log("isFav")
+      const action = { type: "UNSAVE_CITY", value: forecast.city };
+      dispatch(action);
+    } else {
+      console.log("isNotFav")
+
+      const action = { type: "SAVE_CITY", value: forecast.city };
+      dispatch(action);
+    }
+  };
+
+  const isFav = () => {
+    const index = favCities.findIndex(
+      (favCity) => favCity.id === forecast.city.id
+    );
+    console.log(index);
+    return index !== -1;
+  };
+
+  if (!forecast) return <Text>Loading</Text>;
   else {
+    /* console.log(forecast);
+    return <Text>Test</Text> */
     return (
-      /*  <ImageBackground
-        source={require("../../assets/landscape.jpg")}
-        style={{ width: "100%", height: "100%", opacity: 0.8 }}
-      > */
       <Layout style={styles.container}>
-        <Card style={styles.card} header={() => Header(data)}>
+        <Card style={styles.card} header={(props) =><Header {...props} />}>
           <PrecipitationGraph
-            data={data ? data.minutely : undefined}
-            timezone={data ? data.timezone_offset : 0}
+            data={forecast.minutely }
+            timezone={ forecast.timezone_offset }
           />
           <Evolutions
-            data={data ? data.hourly : undefined}
-            timezone={data ? data.timezone_offset : 0}
+            data={forecast.hourly}
+            timezone={forecast.timezone_offset }
           />
           <Previsions
-            data={data ? data.daily : undefined}
-            timezone={data ? data.timezone_offset : 0}
+            data={forecast.daily }
+            timezone={forecast.timezone_offset }
           />
-
-          {/* <View>
-                <Text category="h6">Prévisions 7 jours</Text>
-                <List
-                   
-                    data={DAYS}
-                    renderItem={renderPrevision}
-                    keyExtractor={day => day.id}
-                  />
-              </View> */}
         </Card>
       </Layout>
       /*   </ImageBackground> */
     );
   }
 };
+
+const mapStateToProps = (state) => {
+  return {
+    favCities: state.favCities,
+  };
+};
+
+export default connect(mapStateToProps)(Details);
+
 const styles = StyleSheet.create({
   container: {
     opacity: 0.9,

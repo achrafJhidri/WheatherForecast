@@ -15,9 +15,9 @@ const Header = (fav) => (
     </View>
 
     <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
-      <ArrowDown stroke="white" />
+      <ArrowDown stroke="black" />
       <Text>{fav.down}°C</Text>
-      <ArrowUp stroke="white" />
+      <ArrowUp stroke="black" />
       <Text>{fav.up}°C</Text>
     </View>
   </View>
@@ -27,7 +27,7 @@ const Header = (fav) => (
 const ItemEvolution = (item) => (
   <View style={{ alignItems: "center" }}>
     <Text>{item.time}</Text>
-    <Droplet stroke="white" />
+    <Droplet stroke="black" />
     <Text>15°C</Text>
   </View>
 );

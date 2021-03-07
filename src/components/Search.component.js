@@ -124,6 +124,7 @@ export const SearchScreen = ({ navigation }) => {
 
   const onTouchingTheMap = (e) => {
     navigateToHome(e.nativeEvent.coordinate);
+
   };
 
   const navigateToHome = (coordinates) => {
