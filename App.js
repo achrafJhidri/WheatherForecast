@@ -7,7 +7,8 @@ import {
 } from "@ui-kitten/components";
 import { EvaIconsPack } from "@ui-kitten/eva-icons";
 import { Provider } from "react-redux";
-import Store from "./src/store/config";
+import { Store, Persistor } from "./src/store/config";
+import { PersistGate } from "redux-persist/integration/react";
 
 import { SafeAreaView, StatusBar } from "react-native";
 import { AppNavigator } from "./src/navigation/navigation.component";
@@ -16,10 +17,12 @@ export default () => (
   <>
     <SafeAreaView style={{ flex: 1 }}>
       <Provider store={Store}>
-        <IconRegistry icons={EvaIconsPack} />
-        <ApplicationProvider {...eva} theme={eva.light}>
-          <AppNavigator />
-        </ApplicationProvider>
+        <PersistGate loading={null} persistor={Persistor}>
+          <IconRegistry icons={EvaIconsPack} />
+          <ApplicationProvider {...eva} theme={eva.light}>
+            <AppNavigator />
+          </ApplicationProvider>
+        </PersistGate>
       </Provider>
     </SafeAreaView>
     <StatusBar />

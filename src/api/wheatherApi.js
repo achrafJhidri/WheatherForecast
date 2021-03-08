@@ -3,7 +3,27 @@ const oneCallUrl = "https://api.openweathermap.org/data/2.5/onecall";
 const currentWheather = "https://api.openweathermap.org/data/2.5/weather?";
 
 import { getAddressByCoordinates } from "./geoLocation";
-export const getWheatherByCoords = async ({ longitude, latitude }) => {
+
+export const getFullWheather = async({longitude, latitude}) => {
+  try {
+    return getWheatherByCoords(longitude, latitude, "");
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const getSampleWheather  = async({longitude, latitude}) => {
+  try {
+    return getWheatherByCoords(longitude, latitude, "&exclude=minutely,hourly");
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+
+export const getWheatherByCoords = async ( longitude, latitude, exclude  ) => {
+
   try {
     const location = await getAddressByCoordinates({
       longitude: longitude,
@@ -15,6 +35,7 @@ export const getWheatherByCoords = async ({ longitude, latitude }) => {
         latitude +
         "&lon=" +
         longitude +
+        exclude +
         "&lang=fr&units=metric&appid=" +
         ApiKey
     );
@@ -28,6 +49,8 @@ export const getWheatherByCoords = async ({ longitude, latitude }) => {
   }
 
 };
+
+
 
 export const getWheatherByCityName = async (cityName) => {
   return fetchFunction(currentWheather + `q=${cityName}&appid=${ApiKey}`);

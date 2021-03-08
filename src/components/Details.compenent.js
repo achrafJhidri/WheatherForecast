@@ -6,7 +6,7 @@ import {
   ArrowUp,
   Cloud,
   Droplet,
-  Heart,
+  Star,
   Umbrella,
   Wind,
 } from "react-native-feather";
@@ -58,24 +58,17 @@ const Details = ({ data, favCities, dispatch }) => {
       </View>
       <View>
         <TouchableWithoutFeedback onPress={()=>toggleFav()}>
-          <Heart fill={isFav() ? "black" : "white"} stroke="black"  width={42} height={42} />
+          <Star fill={isFav() ? "black" : "white"} stroke="black"  width={42} height={42} />
         </TouchableWithoutFeedback>
       </View>
     </View>
   );
-
-  useEffect(() => {
-    if (data) setForecast(data);
-  }, [data]);
-
+  
   const toggleFav = () => {
-    console.log("toggleFav")
     if (isFav()) {
-      console.log("isFav")
       const action = { type: "UNSAVE_CITY", value: forecast.city };
       dispatch(action);
     } else {
-      console.log("isNotFav")
 
       const action = { type: "SAVE_CITY", value: forecast.city };
       dispatch(action);
@@ -86,9 +79,14 @@ const Details = ({ data, favCities, dispatch }) => {
     const index = favCities.findIndex(
       (favCity) => favCity.id === forecast.city.id
     );
-    console.log(index);
     return index !== -1;
   };
+
+  useEffect(() => {
+    if (data) setForecast(data);
+  }, [data]);
+
+  
 
   if (!forecast) return <Text>Loading</Text>;
   else {

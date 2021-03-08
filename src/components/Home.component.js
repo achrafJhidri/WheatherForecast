@@ -12,7 +12,7 @@ import { getActualLocation } from "../api/geoLocation";
 import { getData, removeValue, storeData } from "../storage/storage";
 import { DisplayError } from "./DisplayError.component";
 import  Details  from "./Details.compenent";
-import { getWheatherByCoords } from "../api/wheatherApi";
+import { getFullWheather } from "../api/wheatherApi";
 
 export const HomeScreen = ({ route, navigation }) => {
   const [error, setError] = useState({ isError: false, message: null });
@@ -55,7 +55,7 @@ export const HomeScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     
-    getWheatherByCoords(displayedLocation) //this is triggered whenever displayedLocation is set
+    getFullWheather(displayedLocation) //this is triggered whenever displayedLocation is set
       // so the page refresh and show the good result
       .then((result) => {
         setForecast(result);
@@ -76,7 +76,6 @@ export const HomeScreen = ({ route, navigation }) => {
   }, [storedLocations]);
 
   useEffect(()=> {
-    console.log(forecast)
   }, [forecast])
 
   const getStoredLocation = async () => {
@@ -84,7 +83,7 @@ export const HomeScreen = ({ route, navigation }) => {
       .then((tab) => {
         let result = JSON.parse(tab);
         setStoredLocations(result);
-        console.log("setstored") //this will trigger wheather api call
+        //this will trigger wheather api call
       })
       .catch((error) => {
         //you'll get here if => Localisation is not authorized

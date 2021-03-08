@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from '../components/Home.component';
 import { SearchScreen } from '../components/Search.component';
-import {FavoritsScreen} from '../components/Favorits.component'
+import FavoritsScreen from '../components/Favorits.component'
 
 const { Navigator, Screen } = createStackNavigator();
 
