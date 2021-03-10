@@ -15,7 +15,8 @@ import { AppNavigator } from "./src/navigation/navigation.component";
 
 export default () => (
   <>
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flexGrow: 1 }}>
+      
       <Provider store={Store}>
         <PersistGate loading={null} persistor={Persistor}>
           <IconRegistry icons={EvaIconsPack} />

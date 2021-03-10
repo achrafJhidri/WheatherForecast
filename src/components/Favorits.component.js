@@ -1,16 +1,17 @@
 import React from "react";
-import { SafeAreaView, FlatList } from "react-native";
+import { SafeAreaView, FlatList, TouchableWithoutFeedback, View } from "react-native";
 import {
+  Card,
   Layout,
   TopNavigation,
   TopNavigationAction,
 } from "@ui-kitten/components";
 import { assets } from "../definitions/assets";
-import  FavCard  from "./FavoriteCard.component";
+import FavCard from "./FavoriteCard.component";
 import listFav from "../helper/fakeFav";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react/cjs/react.development";
-import {getSampleWheather} from "../api/wheatherApi";
+import { getSampleWheather } from "../api/wheatherApi";
 
 const FavoritsScreen = ({ navigation, favCities }) => {
   const [isRefreshing, setIsRefreshing] = useState(true);
@@ -25,9 +26,9 @@ const FavoritsScreen = ({ navigation, favCities }) => {
     setIsError(false);
     let weathers = [];
     try {
-      for(const city of favCities){
+      for (const city of favCities) {
         console.log(city);
-        const location = {longitude : city.lon, latitude: city.lat};
+        const location = { longitude: city.lon, latitude: city.lat };
         const forecast = await getSampleWheather(location);
         weathers.push(forecast);
       }
@@ -36,15 +37,22 @@ const FavoritsScreen = ({ navigation, favCities }) => {
       console.log(error);
       setIsError(true);
       setWeathers([]);
-      
     }
     setIsRefreshing(false);
-  }
+  };
   const navigateBack = () => {
     navigation.goBack();
   };
   const search = () => {
     navigation.navigate("Search");
+  };
+
+  const onDetails = (item) => {
+    const coordinates = {
+      latitude: item.lat,
+      longitude: item.lon
+    }
+    navigation.navigate("Home", {coordinates});
   };
 
   const accessoryRight = () => (
@@ -65,7 +73,13 @@ const FavoritsScreen = ({ navigation, favCities }) => {
       <Layout style={{ flex: 1, justifyContent: "center" }}>
         <FlatList
           data={weathers}
-          renderItem={({ item }) => <FavCard forecast={item} />}
+          renderItem={({ item }) => (
+            <TouchableWithoutFeedback onPress={() => onDetails(item)}>
+              <View>
+                <FavCard forecast={item} />
+              </View>
+            </TouchableWithoutFeedback>
+          )}
           keyExtractor={(item) => item.city.id}
         />
       </Layout>

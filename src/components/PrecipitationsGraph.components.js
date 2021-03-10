@@ -7,15 +7,16 @@ const screenWidth = Dimensions.get("window").width;
 
 
 const chartConfig = {
+  //backgroundColor: "blue",
   backgroundGradientFrom: "#1E2923",
-  backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: "#08130D",
+  backgroundGradientFromOpacity: 0.5,
+ // backgroundGradientTo: "#08130D",
   backgroundGradientToOpacity: 0.5,
   color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
   //strokeWidth: 2, // optional, default 3
   barPercentage: 0.5,
   propsForLabels: {textAnchor:"middle"},
-  useShadowColorFromDataset: false, // optional
+  useShadowColorFromDataset: true, // optional
 };
 
 export const PrecipitationGraph = ({ data, timezone }) => {
@@ -29,7 +30,7 @@ export const PrecipitationGraph = ({ data, timezone }) => {
     const precipitations = [];
     if (Array.isArray(data)) {
       data.forEach((element) => {
-        const time = new Date((element.dt+timezone)*1000)
+        const time = new Date((element.dt + timezone) * 1000)
           .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
           .substring(0, 5);
         labels.push(time);
@@ -47,7 +48,7 @@ export const PrecipitationGraph = ({ data, timezone }) => {
     datasets: [
       {
         data: datasets,
-        color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // optional
+        color: (opacity = 1) => `rgba(134, 65, 255, ${opacity})`, // optional
         strokeWidth: 2, // optional
       },
     ],
@@ -61,13 +62,13 @@ export const PrecipitationGraph = ({ data, timezone }) => {
       <Text category="h6">Précipitations</Text>
       <LineChart
         data={DATA}
-        width={screenWidth - 50}
+        width={screenWidth -50}
         height={180}
         chartConfig={chartConfig}
         hidePointsAtIndex={hidePoints}
         withDots={false}
         withVerticalLines= {false}
-        style={{ paddingRight: 50}}
+        style={{ paddingRight: 40, paddingLeft: -30}}
       
       />
     </View>

@@ -4,6 +4,7 @@ function favCities(state = initialState, action) {
   let nextState
   switch (action.type) {
     case 'SAVE_CITY':
+      console.log(action.value, "store")
       nextState = {
         ...state,
         favCities: [...state.favCities, action.value]

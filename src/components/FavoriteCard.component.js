@@ -15,63 +15,18 @@ import {
 } from "react-native-feather";
 
 
-/* const Header = (fav) => (
-  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-    <View style={{ alignSelf: "flex-start" }}>
-      <Text category="h6">{fav.city}</Text>
-      <Text category="s1">{fav.weather}</Text>
-    </View>
 
-    <View style={{ flexDirection: "row", alignSelf: "flex-end" }}>
-      <ArrowDown stroke="black" />
-      <Text>{fav.down}°C</Text>
-      <ArrowUp stroke="black" />
-      <Text>{fav.up}°C</Text>
-    </View>
-  </View>
-);
-
-const ItemEvolution = (item) => (
-  <View style={{ alignItems: "center" }}>
-    <Text>{item.time}</Text>
-    <Droplet stroke="black" />
-    <Text>15°C</Text>
-  </View>
-); */
 
  const FavCard = ({ forecast, favCities, dispatch }) => {
-  /* //const [hours, setHours] = useState([{id:"1", time:""}, {id:"2", time:""}, {id:"3", time:""}, {id:"4", time:""}])
-
-  useEffect(()=> {
-    /* const temp = [];
-    for(var i = 0; i < 4 ; i++) {
-      temp[i].time = ((new Date().getHours()+4*(i+1))%24);
-    }
-    console.log(temp)
-    setHours(temp); 
-   
-  }, [])
-  return (
-  <React.Fragment>
-    <Layout style={styles.topContainer} level="1">
-      <Card style={styles.card} header={() => Header(data)}>
-       {/* <FlatList
-          data={hours}
-          renderItem={({item})=> ItemEvolution(item)}
-          keyExtractor={(item) => item.id}
-        />  }
-        
-
-      </Card>
-    </Layout>
-  </React.Fragment> 
-       );*/
+  
   const toggleFav = () => {
+    const city  = forecast.city;
+    console.log(city);
     if (isFav()) {
-      const action = { type: "UNSAVE_CITY", value: forecast.city };
+      const action = { type: "UNSAVE_CITY", value: city };
       dispatch(action);
     } else {
-      const action = { type: "SAVE_CITY", value: forecast.city };
+      const action = { type: "SAVE_CITY", value: city };
       dispatch(action);
     }
   };
@@ -86,42 +41,42 @@ const ItemEvolution = (item) => (
   return (
     <View style={{ flexDirection: "row" }}>
       <View>
-        <Text category="h6">{forecast.city.id}</Text>
-        <Text category="s2">
+        <Text category="h6" style={styles.text} >{forecast.city.id}</Text>
+        <Text category="s2" style={styles.text} >
           {forecast.current.weather[0].description},{" "}
           {Math.round(forecast.current.temp)}
           °C
         </Text>
         <View style={{ flexDirection: "row" }}>
           <View style={{ flexDirection: "row" }}>
-            <ArrowDown stroke="black" />
-            <Text>{Math.round(forecast.daily[0].temp.min)}°C</Text>
+            <ArrowDown stroke="white" />
+            <Text style={styles.text}>{Math.round(forecast.daily[0].temp.min) }°C</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <ArrowUp stroke="black" />
-            <Text>{Math.round(forecast.daily[0].temp.max)}°C</Text>
+            <ArrowUp stroke="white" />
+            <Text style={styles.text}>{Math.round(forecast.daily[0].temp.max)}°C</Text>
           </View>
         </View>
         <View style={{ flexDirection: "row" }}>
           <View style={{ flexDirection: "row" }}>
-            <Wind stroke="black" />
-            <Text>{Math.round(forecast.current.wind_speed)}km/h</Text>
+            <Wind stroke="white" />
+            <Text style={styles.text}>{Math.round(forecast.current.wind_speed)}km/h</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <Umbrella stroke="black" />
-            <Text>{forecast.current.humidity}% </Text>
+            <Umbrella stroke="white" />
+            <Text style={styles.text}>{forecast.current.humidity}% </Text>
           </View>
           <View style={{ flexDirection: "row" }}>
-            <Cloud stroke="black" />
-            <Text>{Math.round(forecast.current.clouds)}% </Text>
+            <Cloud stroke="white" />
+            <Text style={styles.text}>{Math.round(forecast.current.clouds)}% </Text>
           </View>
         </View>
       </View>
-      <View>
+      <View style={{ flex:1, alignItems:'flex-end'}}>
         <TouchableWithoutFeedback onPress={() => toggleFav()}>
           <Star
-            fill={isFav() ? "black" : "white"}
-            stroke="black"
+            fill={isFav() ? "yellow" : "white"}
+            stroke="white"
             width={42}
             height={42}
           />
@@ -148,4 +103,7 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 20,
   },
+  text : {
+    color: 'white'
+  }
 });

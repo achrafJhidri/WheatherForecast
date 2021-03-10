@@ -11,7 +11,7 @@ import { assets } from "../definitions/assets";
 import { getActualLocation } from "../api/geoLocation";
 import { getData, removeValue, storeData } from "../storage/storage";
 import { DisplayError } from "./DisplayError.component";
-import  Details  from "./Details.compenent";
+import  {Details}  from "./Details.compenent";
 import { getFullWheather } from "../api/wheatherApi";
 
 export const HomeScreen = ({ route, navigation }) => {
@@ -140,7 +140,8 @@ export const HomeScreen = ({ route, navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flexGrow: 1}}>
+      
       <TopNavigation
         title="Wheather forcast"
         alignment="center"
@@ -148,7 +149,7 @@ export const HomeScreen = ({ route, navigation }) => {
       />
       <Divider />
       <Layout
-        style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        style={{ flexGrow: 1 , justifyContent: "center", alignItems: "center" }}
       >
         {error.isError ? renderError() : displayWheather()}
       </Layout>
