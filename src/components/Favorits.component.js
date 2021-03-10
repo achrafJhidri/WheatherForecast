@@ -1,5 +1,11 @@
 import React from "react";
-import { SafeAreaView, FlatList, TouchableWithoutFeedback, View } from "react-native";
+import {
+  SafeAreaView,
+  FlatList,
+  StyleSheet,
+  View,
+  ActivityIndicator,
+} from "react-native";
 import {
   Card,
   Layout,
@@ -12,6 +18,8 @@ import listFav from "../helper/fakeFav";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react/cjs/react.development";
 import { getSampleWheather } from "../api/wheatherApi";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import ImageBackground from "react-native/Libraries/Image/ImageBackground";
 
 const FavoritsScreen = ({ navigation, favCities }) => {
   const [isRefreshing, setIsRefreshing] = useState(true);
@@ -27,7 +35,6 @@ const FavoritsScreen = ({ navigation, favCities }) => {
     let weathers = [];
     try {
       for (const city of favCities) {
-        console.log(city);
         const location = { longitude: city.lon, latitude: city.lat };
         const forecast = await getSampleWheather(location);
         weathers.push(forecast);
@@ -47,12 +54,22 @@ const FavoritsScreen = ({ navigation, favCities }) => {
     navigation.navigate("Search");
   };
 
-  const onDetails = (item) => {
-    const coordinates = {
-      latitude: item.lat,
-      longitude: item.lon
-    }
-    navigation.navigate("Home", {coordinates});
+  const onDetails =  async (item) => {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log('ondetail')
+      
+      const index = favCities.findIndex(
+        (favCity) => favCity.id === item.city.id
+      );
+      console.log(favCities);
+      if (index !== -1) {
+        const coordinates = {
+          latitude: item.lat,
+          longitude: item.lon,
+        };
+        navigation.navigate("Home", { coordinates });
+      }
+    
   };
 
   const accessoryRight = () => (
@@ -70,19 +87,29 @@ const FavoritsScreen = ({ navigation, favCities }) => {
         accessoryLeft={accessoryLeft}
         accessoryRight={accessoryRight}
       />
-      <Layout style={{ flex: 1, justifyContent: "center" }}>
-        <FlatList
-          data={weathers}
-          renderItem={({ item }) => (
-            <TouchableWithoutFeedback onPress={() => onDetails(item)}>
-              <View>
-                <FavCard forecast={item} />
+      {isRefreshing ? (
+        <ActivityIndicator size="large" />
+      ) : (
+        <Layout style={{ flex: 1, justifyContent: "center" }}>
+          <FlatList
+            data={weathers}
+            renderItem={({ item }) => (
+              <View style={{ margin: 20 /* backgroundColor: 'blue' */ }}>
+                <ImageBackground
+                  source={require("../../assets/night.jpg")}
+                  imageStyle={{ borderRadius: 20 }}
+                  style={styles.image}
+                >
+                  <TouchableOpacity onPress={() => onDetails(item)}>
+                    <FavCard forecast={item} />
+                  </TouchableOpacity>
+                </ImageBackground>
               </View>
-            </TouchableWithoutFeedback>
-          )}
-          keyExtractor={(item) => item.city.id}
-        />
-      </Layout>
+            )}
+            keyExtractor={(item) => item.city.id}
+          />
+        </Layout>
+      )}
     </SafeAreaView>
   );
 };
@@ -94,3 +121,15 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(FavoritsScreen);
+
+const styles = StyleSheet.create({
+  image: {
+    flex: 1,
+    //resizeMode: "cover",
+    //width: "100%",
+    //height: "100%",
+    //backgroundColor:'blue',
+
+    //opacity: 0.5,
+  },
+});

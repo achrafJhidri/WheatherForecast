@@ -54,18 +54,18 @@ export const Details = ({ data }) => {
               timezone={forecast.timezone_offset}
             />
          
-          <Card>
+        
             <Evolutions
               data={forecast.hourly}
               timezone={forecast.timezone_offset}
             />
-          </Card>
-          <Card>
+       
+          
             <Previsions
               data={forecast.daily}
               timezone={forecast.timezone_offset}
             />
-          </Card>
+    
         </ImageBackground>
       </Layout>
     );

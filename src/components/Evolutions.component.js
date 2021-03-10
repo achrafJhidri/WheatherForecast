@@ -12,14 +12,14 @@ const imageUrl = "http://openweathermap.org/img/wn/";
 
 const ItemEvolution = ({ item }) => (
   <View style={{ alignItems: "center" }}>
-    <Text style={{ color: "black" }}>{item.id}</Text>
+    <Text style={{ color: "white" }}>{item.id}</Text>
     <Image
       style={{ width: 50, height: 50 }}
       source={{
         uri: imageUrl + item.icon + ".png",
       }}
     />
-    <Text style={{ color: "black" }}>{Math.round(item.temp)}°C</Text>
+    <Text style={{ color: "white" }}>{Math.round(item.temp)}°C</Text>
   </View>
 );
 
@@ -63,7 +63,7 @@ export const Evolutions = ({ data, timezone }) => {
 
   if (weathers.length > 0)
     return (
-      <View>
+      <View style={{margin:15}}>
         <Text category="h6">Evolution 24h</Text>
         <View
           style={{
@@ -83,7 +83,7 @@ export const Evolutions = ({ data, timezone }) => {
           /> */}
           <TouchableWithoutFeedback onPress={() => onBack()}>
             <ChevronLeft
-              stroke={startIndex > 0 ? "black" : "grey"}
+              stroke={startIndex > 0 ? "white" : "grey"}
               width={42}
               height={42}
             />
@@ -101,7 +101,7 @@ export const Evolutions = ({ data, timezone }) => {
 
           <TouchableWithoutFeedback onPress={() => onForward()}>
             <ChevronRight
-              stroke={startIndex + 4 < weathers.length ? "black" : "grey"}
+              stroke={startIndex + 4 < weathers.length ? "white" : "grey"}
               width={42}
               height={42}
             />

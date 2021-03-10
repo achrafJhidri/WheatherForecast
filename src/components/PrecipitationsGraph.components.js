@@ -41,7 +41,7 @@ export const PrecipitationGraph = ({ data, timezone }) => {
     }
   }, [data]);
 
-  const hidePoints = Array.from(Array(61).keys()).filter( i  => i !== 0 && i!==30  && i !== 60);
+  const hidePoints = Array.from(Array(61).keys()).filter( i  => i !== 0 && i!==20  && i !== 40 && i !== 55);
 
   const DATA = {
     labels: labelHours,
@@ -58,8 +58,8 @@ export const PrecipitationGraph = ({ data, timezone }) => {
 
   if(labelHours.length > 0)
   return (
-    <View>
-      <Text category="h6">Précipitations</Text>
+    <View style={{margin:15}}>
+      <Text category="65546az">Précipitations</Text>
       <LineChart
         data={DATA}
         width={screenWidth -50}

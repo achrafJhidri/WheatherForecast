@@ -19,9 +19,9 @@ import {
 
  const FavCard = ({ forecast, favCities, dispatch }) => {
   
-  const toggleFav = () => {
+  const toggleFav = (e) => {
+    console.log('togglefav')
     const city  = forecast.city;
-    console.log(city);
     if (isFav()) {
       const action = { type: "UNSAVE_CITY", value: city };
       dispatch(action);
@@ -39,8 +39,8 @@ import {
   };
 
   return (
-    <View style={{ flexDirection: "row" }}>
-      <View>
+    <View style={{ flexDirection: "row", margin:15 }}>
+      <View style={{}}> 
         <Text category="h6" style={styles.text} >{forecast.city.id}</Text>
         <Text category="s2" style={styles.text} >
           {forecast.current.weather[0].description},{" "}
@@ -73,9 +73,9 @@ import {
         </View>
       </View>
       <View style={{ flex:1, alignItems:'flex-end'}}>
-        <TouchableWithoutFeedback onPress={() => toggleFav()}>
+        <TouchableWithoutFeedback onPress={(e) => toggleFav(e)}>
           <Star
-            fill={isFav() ? "yellow" : "white"}
+            fill={isFav() ? "orange" : "white"}
             stroke="white"
             width={42}
             height={42}
