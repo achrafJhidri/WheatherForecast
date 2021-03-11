@@ -5,6 +5,7 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
+  Text,
 } from "react-native";
 import {
   Card,
@@ -20,11 +21,14 @@ import { useEffect, useState } from "react/cjs/react.development";
 import { getSampleWheather } from "../api/wheatherApi";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ImageBackground from "react-native/Libraries/Image/ImageBackground";
+import { DisplayError } from "./DisplayError.component";
 
 const FavoritsScreen = ({ navigation, favCities }) => {
   const [isRefreshing, setIsRefreshing] = useState(true);
   const [weathers, setWeathers] = useState([]);
   const [isError, setIsError] = useState(false);
+  const [lastRefresh, setLastRefresh] = useState(0);
+
   useEffect(() => {
     refreshWeathers();
   }, [favCities]);
@@ -32,19 +36,49 @@ const FavoritsScreen = ({ navigation, favCities }) => {
   const refreshWeathers = async () => {
     setIsRefreshing(true);
     setIsError(false);
-    let weathers = [];
+    let _weathers = [];
     try {
-      for (const city of favCities) {
-        const location = { longitude: city.lon, latitude: city.lat };
-        const forecast = await getSampleWheather(location);
-        weathers.push(forecast);
+      if (new Date() - lastRefresh >= 3600000 || weathers.length === 0) {
+        console.log("1er", weathers.length);
+        for (const city of favCities) {
+          const location = { longitude: city.lon, latitude: city.lat };
+          const forecast = await getSampleWheather(location);
+          _weathers.push(forecast);
+        }
+        setLastRefresh(new Date());
+      } else {
+        _weathers = [...weathers];
+        if (favCities.length > weathers.length) {
+          for (const city of favCities) {
+            if (weathers.findIndex((w) => w.city.id === city.id) === -1) {
+              const location = { longitude: city.lon, latitude: city.lat };
+              const forecast = await getSampleWheather(location);
+              _weathers.push(forecast);
+              break;
+            }
+          }
+        } else {
+          for (const weather of weathers) {
+            const index = favCities.findIndex(
+              (city) => city.id === weather.city.id
+            );
+            if (index === -1) {
+              const indexToRemove = weathers.findIndex(
+                (w) => w.city.id === weather.city.id
+              );
+              _weathers.splice(indexToRemove, 1);
+              break;
+            }
+          }
+        }
       }
-      setWeathers(weathers);
+      setWeathers(_weathers);
     } catch (error) {
-      console.log(error);
       setIsError(true);
       setWeathers([]);
+      console.log(error);
     }
+
     setIsRefreshing(false);
   };
   const navigateBack = () => {
@@ -54,21 +88,16 @@ const FavoritsScreen = ({ navigation, favCities }) => {
     navigation.navigate("Search");
   };
 
-  const onDetails =  async (item) => {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log('ondetail')
-      
-      const index = favCities.findIndex(
-        (favCity) => favCity.id === item.city.id
-      );
-      console.log(favCities);
-      if (index !== -1) {
-        const coordinates = {
-          latitude: item.lat,
-          longitude: item.lon,
-        };
-        navigation.navigate("Home", { coordinates });
-      }
+  const onDetails = async (item) => {
+   /*  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const index = favCities.findIndex((favCity) => favCity.id === item.city.id);
+    if (index !== -1) { */
+      const coordinates = {
+        latitude: item.lat,
+        longitude: item.lon,
+      };
+      navigation.navigate("Home", { coordinates });
     
   };
 
@@ -87,8 +116,13 @@ const FavoritsScreen = ({ navigation, favCities }) => {
         accessoryLeft={accessoryLeft}
         accessoryRight={accessoryRight}
       />
-      {isRefreshing ? (
-        <ActivityIndicator size="large" />
+      {isError ? (
+        <DisplayError message="Impossible de récupérer les favoris, vérifiez votre connexion" />
+      ) : isRefreshing ? (
+        <View style={styles.containerLoading}>
+          <ActivityIndicator size="large" color="orange" />
+          
+        </View>
       ) : (
         <Layout style={{ flex: 1, justifyContent: "center" }}>
           <FlatList
@@ -131,5 +165,10 @@ const styles = StyleSheet.create({
     //backgroundColor:'blue',
 
     //opacity: 0.5,
+  },
+  containerLoading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

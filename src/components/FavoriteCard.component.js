@@ -13,15 +13,11 @@ import {
   Umbrella,
   Wind,
 } from "react-native-feather";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-
-
-
- const FavCard = ({ forecast, favCities, dispatch }) => {
-  
-  const toggleFav = (e) => {
-    console.log('togglefav')
-    const city  = forecast.city;
+const FavCard = ({ forecast, favCities, dispatch }) => {
+  const toggleFav = () => {
+    const city = forecast.city;
     if (isFav()) {
       const action = { type: "UNSAVE_CITY", value: city };
       dispatch(action);
@@ -38,49 +34,65 @@ import {
     return index !== -1;
   };
 
+  const onDetails = () => {
+    /* const index = favCities.findIndex(
+      (favCity) => favCity.id === item.city.id
+    );
+    console.log(favCities);
+    if (index !== -1) { */
+    const coordinates = {
+      latitude: forecast.city.lat,
+      longitude: forecast.city.lon,
+    };
+    navigation.navigate("Home", { coordinates });
+  };
+  console.log(forecast.daily[0].temp.min);
   return (
-    <View style={{ flexDirection: "row", margin:15 }}>
-      <View style={{}}> 
-        <Text category="h6" style={styles.text} >{forecast.city.id}</Text>
-        <Text category="s2" style={styles.text} >
-          {forecast.current.weather[0].description},{" "}
-          {Math.round(forecast.current.temp)}
-          °C
-        </Text>
-        <View style={{ flexDirection: "row" }}>
-          <View style={{ flexDirection: "row" }}>
-            <ArrowDown stroke="white" />
-            <Text style={styles.text}>{Math.round(forecast.daily[0].temp.min) }°C</Text>
+    <View style={styles.container}>
+      <View>
+        <TouchableOpacity /* onPress={() => onDetails()} */>
+          <View style={styles.subContainer}>
+            <Text category="h6" style={styles.text}>
+              {forecast.city.id}
+            </Text>
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <ArrowUp stroke="white" />
-            <Text style={styles.text}>{Math.round(forecast.daily[0].temp.max)}°C</Text>
+          <View style={styles.subContainer}>
+            <Text category="s1" style={styles.text}>
+              {forecast.current.weather[0].description},{" "}
+              {Math.round(forecast.current.temp)}
+              °C
+            </Text>
           </View>
-        </View>
-        <View style={{ flexDirection: "row" }}>
+
           <View style={{ flexDirection: "row" }}>
-            <Wind stroke="white" />
-            <Text style={styles.text}>{Math.round(forecast.current.wind_speed)}km/h</Text>
+            <View style={styles.iconText}>
+              <Wind stroke="white" />
+              <Text style={styles.text}>
+                {Math.round(forecast.current.wind_speed)}km/h
+              </Text>
+            </View>
+            <View style={styles.iconText}>
+              <Umbrella stroke="white" />
+              <Text style={styles.text}>{forecast.current.humidity}% </Text>
+            </View>
+            <View style={styles.iconText}>
+              <Cloud stroke="white" />
+              <Text style={styles.text}>
+                {Math.round(forecast.current.clouds)}%{" "}
+              </Text>
+            </View>
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <Umbrella stroke="white" />
-            <Text style={styles.text}>{forecast.current.humidity}% </Text>
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            <Cloud stroke="white" />
-            <Text style={styles.text}>{Math.round(forecast.current.clouds)}% </Text>
-          </View>
-        </View>
+        </TouchableOpacity>
       </View>
-      <View style={{ flex:1, alignItems:'flex-end'}}>
-        <TouchableWithoutFeedback onPress={(e) => toggleFav(e)}>
+      <View style={{ flex: 1, alignItems: "flex-end" }}>
+        <TouchableOpacity onPress={() => toggleFav()}>
           <Star
             fill={isFav() ? "orange" : "white"}
             stroke="white"
             width={42}
             height={42}
           />
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -94,16 +106,24 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps)(FavCard);
 const styles = StyleSheet.create({
-  topContainer: {
-    flex: 1,
+  container: {
     flexDirection: "row",
+    margin: 15,
     //justifyContent: 'space-between',
+  },
+  subContainer: {
+    marginBottom:10
   },
   card: {
     flex: 1,
     margin: 20,
   },
-  text : {
-    color: 'white'
-  }
+  text: {
+    color: "white",
+  },
+  iconText: {
+    flexDirection: "row",
+    marginRight: 15,
+
+  },
 });

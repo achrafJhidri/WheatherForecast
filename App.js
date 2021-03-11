@@ -20,7 +20,7 @@ export default () => (
       <Provider store={Store}>
         <PersistGate loading={null} persistor={Persistor}>
           <IconRegistry icons={EvaIconsPack} />
-          <ApplicationProvider {...eva} theme={eva.light}>
+          <ApplicationProvider {...eva} theme={eva.dark}>
             <AppNavigator />
           </ApplicationProvider>
         </PersistGate>

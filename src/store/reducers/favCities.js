@@ -15,7 +15,6 @@ function favCities(state = initialState, action) {
         ...state,
         favCities: state.favCities.filter(city => city.id !== action.value.id)
       };
-      console.log(nextState);
       return nextState || state
     default:
       return state

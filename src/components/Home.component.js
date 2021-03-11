@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, ImageBackground, View } from "react-native";
+import { ActivityIndicator, Image, ImageBackground, View } from "react-native";
 import {
   Divider,
   Layout,
@@ -11,7 +11,7 @@ import { assets } from "../definitions/assets";
 import { getActualLocation } from "../api/geoLocation";
 import { getData, removeValue, storeData } from "../storage/storage";
 import { DisplayError } from "./DisplayError.component";
-import  {Details}  from "./Details.compenent";
+import { Details } from "./Details.compenent";
 import { getFullWheather } from "../api/wheatherApi";
 
 export const HomeScreen = ({ route, navigation }) => {
@@ -20,18 +20,15 @@ export const HomeScreen = ({ route, navigation }) => {
   //so that you have the list of favorit locations to show in FavoritScreen
   const [displayedLocation, setDisplayedLocation] = useState(null);
   const [forecast, setForecast] = useState(null); //the wheatherApi results are here /!\ it's async so use a Spinner
+  const [isLoading, setIsLoading] = useState(true);
+
 
   const navigateToFavorits = () => {
     navigation.navigate("Favorits");
   };
 
   const navigateToSearch = () => {
-    navigation.navigate("Search")
-  };
-  const addToFavoritPlaces = () => {
-    let result = [displayedLocation, ...storedLocations];
-    storeData("localisations", JSON.stringify(result));
-    setStoredLocations(result);
+    navigation.navigate("Search");
   };
 
   useEffect(() => {
@@ -54,17 +51,15 @@ export const HomeScreen = ({ route, navigation }) => {
   }, [route.params]);
 
   useEffect(() => {
-    
+    setIsLoading(true);
     getFullWheather(displayedLocation) //this is triggered whenever displayedLocation is set
       // so the page refresh and show the good result
       .then((result) => {
         setForecast(result);
+        setIsLoading(false);
       })
       .catch((error) => {
-        //do nothing
-        // you probably going to catch this error, but this is caused by the state of
-        // displayedLocation, when this function is called displayedLocation is not ready yet
-        // use a spinner as a workarround
+        console.log(error);
       });
   }, [displayedLocation]);
 
@@ -75,8 +70,7 @@ export const HomeScreen = ({ route, navigation }) => {
     }
   }, [storedLocations]);
 
-  useEffect(()=> {
-  }, [forecast])
+  useEffect(() => {}, [forecast]);
 
   const getStoredLocation = async () => {
     await getData("localisations")
@@ -114,34 +108,20 @@ export const HomeScreen = ({ route, navigation }) => {
         onPress={navigateToSearch}
       />
 
-
-      {/* <TopNavigationAction //this one should be removed for the moment, it's used only to clean the array of storedLocations when testing the app
-        // maybe you should move it to favoritScreen
-        icon={assets.icons.pinOutline}
-        onPress={deleteStored}
-      /> */}
     </React.Fragment>
   );
-  const deleteStored = () => {
-    removeValue("localisations");
-  };
+
   const displayWheather = () => {
-    //here's the view you have to customize
-/*     if (!forecast) return <Text>Loading</Text>;
- */    
-    return (
-      
-        <Details data={forecast} />
-  
-    );
+    
+    if (isLoading) return <ActivityIndicator size="large" color="orange" />;
+    return <Details data={forecast} />;
   };
   const renderError = () => {
     if (error.isError) return <DisplayError message={error.message} />;
   };
 
   return (
-    <View style={{ flexGrow: 1}}>
-      
+    <View style={{ flexGrow: 1 }}>
       <TopNavigation
         title="Wheather forcast"
         alignment="center"
@@ -149,7 +129,7 @@ export const HomeScreen = ({ route, navigation }) => {
       />
       <Divider />
       <Layout
-        style={{ flexGrow: 1 , justifyContent: "center", alignItems: "center" }}
+        style={{ flexGrow: 1, justifyContent: "center", alignItems: "center" }}
       >
         {error.isError ? renderError() : displayWheather()}
       </Layout>
