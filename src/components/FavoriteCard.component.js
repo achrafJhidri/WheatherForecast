@@ -1,18 +1,8 @@
 import React from "react";
-import { StyleSheet, View, TouchableWithoutFeedback } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Card, Layout, Text } from "@ui-kitten/components";
-import { useEffect } from "react";
-import { useState } from "react";
 import { connect } from "react-redux";
-import {
-  ArrowDown,
-  ArrowUp,
-  Cloud,
-  Droplet,
-  Star,
-  Umbrella,
-  Wind,
-} from "react-native-feather";
+import { Cloud, Star, Umbrella, Wind } from "react-native-feather";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const FavCard = ({ forecast, favCities, dispatch }) => {
@@ -66,17 +56,17 @@ const FavCard = ({ forecast, favCities, dispatch }) => {
 
           <View style={{ flexDirection: "row" }}>
             <View style={styles.iconText}>
-              <Wind stroke="white" />
+              <Wind stroke="orange" />
               <Text style={styles.text}>
                 {Math.round(forecast.current.wind_speed)}km/h
               </Text>
             </View>
             <View style={styles.iconText}>
-              <Umbrella stroke="white" />
+              <Umbrella stroke="orange" />
               <Text style={styles.text}>{forecast.current.humidity}% </Text>
             </View>
             <View style={styles.iconText}>
-              <Cloud stroke="white" />
+              <Cloud stroke="orange" />
               <Text style={styles.text}>
                 {Math.round(forecast.current.clouds)}%{" "}
               </Text>
@@ -112,7 +102,7 @@ const styles = StyleSheet.create({
     //justifyContent: 'space-between',
   },
   subContainer: {
-    marginBottom:10
+    marginBottom: 10,
   },
   card: {
     flex: 1,
@@ -124,6 +114,5 @@ const styles = StyleSheet.create({
   iconText: {
     flexDirection: "row",
     marginRight: 15,
-
   },
 });

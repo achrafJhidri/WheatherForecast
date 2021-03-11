@@ -111,7 +111,7 @@ const FavoritsScreen = ({ navigation, favCities }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <TopNavigation
-        title="Select a city"
+        title="Mes favoris"
         alignment="center"
         accessoryLeft={accessoryLeft}
         accessoryRight={accessoryRight}

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, SafeAreaView } from "react-native";
+import { View, Text, Image, SafeAreaView, ActivityIndicator } from "react-native";
 import { Card, Layout, List } from "@ui-kitten/components";
 import { useEffect, useState } from "react/cjs/react.development";
 import { ArrowDown, ArrowUp, Droplet, Umbrella } from "react-native-feather";
@@ -83,5 +83,5 @@ export const Previsions = ({ data, timezone }) => {
           />
         </View>
     );
-  else return <Text>Loading</Text>;
+  else return <ActivityIndicator size="large" color="orange" />;
 };
