@@ -1,9 +1,8 @@
 import React from "react";
-import { View, Text, Image, SafeAreaView, ActivityIndicator, StyleSheet } from "react-native";
-import { Card, Layout, List } from "@ui-kitten/components";
+import { View, Text, Image,  ActivityIndicator, StyleSheet } from "react-native";
 import { useEffect, useState } from "react/cjs/react.development";
-import { ArrowDown, ArrowUp, Droplet, Umbrella } from "react-native-feather";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { ArrowDown, ArrowUp,  Umbrella } from "react-native-feather";
+import { FlatList } from "react-native-gesture-handler";
 const imageUrl = "http://openweathermap.org/img/wn/";
 
 const days = [
@@ -58,7 +57,6 @@ export const Previsions = ({ data, timezone }) => {
     if (Array.isArray(data)) {
       if (data.length == 8) data.shift();
       const res = data.map((element) => {
-        //console.log(element);
         var obj = {};
         obj.id = days[new Date((element.dt + timezone) * 1000).getDay()];
         obj.icon = element.weather[0].icon;
@@ -72,7 +70,7 @@ export const Previsions = ({ data, timezone }) => {
   }, []);
   if (previsions.length > 0)
     return (
-        <View style={{margin:15}} /* style={{flexGrow:1}} */>
+        <View style={{margin:15}} >
           <FlatList
             data={previsions}
             renderItem={renderPrevision}

@@ -8,16 +8,13 @@ const screenWidth = Dimensions.get("window").width;
 
 
 const chartConfig = {
-  //backgroundColor: "blue",
   backgroundGradientFrom: "#9ea3a0",
   backgroundGradientFromOpacity: 0,
- // backgroundGradientTo: "#08130D",
   backgroundGradientToOpacity: 0,
   color: (opacity = 0) => `rgba(255, 255, 255, ${opacity})`,
-  //strokeWidth: 2, // optional, default 3
   barPercentage: 0.5,
   propsForLabels: {textAnchor:"middle"},
-  useShadowColorFromDataset: true, // optional
+  useShadowColorFromDataset: true, 
 };
 
 export const PrecipitationGraph = ({ data, timezone }) => {
@@ -49,11 +46,10 @@ export const PrecipitationGraph = ({ data, timezone }) => {
     datasets: [
       {
         data: datasets,
-        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, // optional
-        strokeWidth: 2, // optional
+        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`, 
+        strokeWidth: 2, 
       },
     ],
-    //legend: ["Précipitation"], // optional
   };
 
 

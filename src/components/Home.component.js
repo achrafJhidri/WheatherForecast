@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Image, ImageBackground, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import {
   Divider,
   Layout,
-  Text,
   TopNavigation,
   TopNavigationAction,
 } from "@ui-kitten/components";
 import { assets } from "../definitions/assets";
 import { getActualLocation } from "../api/geoLocation";
-import { getData, removeValue, storeData } from "../storage/storage";
+import { getData} from "../storage/storage";
 import { DisplayError } from "./DisplayError.component";
 import { Details } from "./Details.compenent";
 import { getFullWheather } from "../api/wheatherApi";

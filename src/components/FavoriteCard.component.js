@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Card, Layout, Text } from "@ui-kitten/components";
+import { Text } from "@ui-kitten/components";
 import { connect } from "react-redux";
 import { Cloud, Star, Umbrella, Wind } from "react-native-feather";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -24,19 +24,6 @@ const FavCard = ({ forecast, favCities, dispatch }) => {
     return index !== -1;
   };
 
-  const onDetails = () => {
-    /* const index = favCities.findIndex(
-      (favCity) => favCity.id === item.city.id
-    );
-    console.log(favCities);
-    if (index !== -1) { */
-    const coordinates = {
-      latitude: forecast.city.lat,
-      longitude: forecast.city.lon,
-    };
-    navigation.navigate("Home", { coordinates });
-  };
-  console.log(forecast.daily[0].temp.min);
   return (
     <View style={styles.container}>
       <View>
@@ -99,7 +86,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     margin: 15,
-    //justifyContent: 'space-between',
   },
   subContainer: {
     marginBottom: 10,

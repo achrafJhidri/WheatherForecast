@@ -5,17 +5,14 @@ import {
   StyleSheet,
   View,
   ActivityIndicator,
-  Text,
 } from "react-native";
 import {
-  Card,
   Layout,
   TopNavigation,
   TopNavigationAction,
 } from "@ui-kitten/components";
 import { assets } from "../definitions/assets";
 import FavCard from "./FavoriteCard.component";
-import listFav from "../helper/fakeFav";
 import { connect } from "react-redux";
 import { useEffect, useState } from "react/cjs/react.development";
 import { getSampleWheather } from "../api/wheatherApi";
@@ -90,10 +87,7 @@ const FavoritsScreen = ({ navigation, favCities }) => {
   };
 
   const onDetails = async (item) => {
-   /*  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const index = favCities.findIndex((favCity) => favCity.id === item.city.id);
-    if (index !== -1) { */
+  
       const coordinates = {
         latitude: item.lat,
         longitude: item.lon,
@@ -103,7 +97,7 @@ const FavoritsScreen = ({ navigation, favCities }) => {
   };
 
   const accessoryRight = () => (
-    <TopNavigationAction icon={assets.icons.addIcon} onPress={search} />
+    <TopNavigationAction icon={assets.icons.searchIcon} onPress={search} />
   );
   const accessoryLeft = () => (
     <TopNavigationAction icon={assets.icons.backIcon} onPress={navigateBack} />
@@ -160,12 +154,6 @@ export default connect(mapStateToProps)(FavoritsScreen);
 const styles = StyleSheet.create({
   image: {
     flex: 1,
-    //resizeMode: "cover",
-    //width: "100%",
-    //height: "100%",
-    //backgroundColor:'blue',
-
-    //opacity: 0.5,
   },
   containerLoading: {
     flex: 1,

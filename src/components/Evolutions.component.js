@@ -1,14 +1,12 @@
 import React from "react";
 import { View, FlatList, Image, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
-import { Button, Icon, Text } from "@ui-kitten/components";
+import { Text } from "@ui-kitten/components";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { ChevronRight, ChevronLeft } from "react-native-feather";
 
 const Intl = require("react-native-intl");
 const imageUrl = "http://openweathermap.org/img/wn/";
-
-
 
 const ItemEvolution = ({ item }) => (
   <View style={{ alignItems: "center" }}>
@@ -26,7 +24,6 @@ const ItemEvolution = ({ item }) => (
 export const Evolutions = ({ data, timezone }) => {
   const [startIndex, setStartIndex] = useState(0);
   const [weathers, setWeathers] = useState([]);
-  //const [_timezone, setTimezone] = useState("UTC");
 
   useEffect(() => {
     if (Array.isArray(data)) {
@@ -51,9 +48,9 @@ export const Evolutions = ({ data, timezone }) => {
     return weathers.slice(startIndex, startIndex + 4);
   };
 
-  const onForward =  () => {
+  const onForward = () => {
     if (startIndex + 5 <= weathers.length) {
-       setStartIndex(startIndex + 1);
+      setStartIndex(startIndex + 1);
     }
   };
 
@@ -63,15 +60,13 @@ export const Evolutions = ({ data, timezone }) => {
 
   if (weathers.length > 0)
     return (
-      <View style={{margin:15}}>
+      <View style={{ margin: 15 }}>
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
-            //alignSelf: "center",
           }}
         >
-
           <TouchableWithoutFeedback onPress={() => onBack()}>
             <ChevronLeft
               stroke={startIndex > 0 ? "white" : "grey"}
@@ -97,7 +92,6 @@ export const Evolutions = ({ data, timezone }) => {
               height={42}
             />
           </TouchableWithoutFeedback>
-          {/*   {displayRightArrow} */}
         </View>
       </View>
     );
@@ -110,5 +104,5 @@ export const Evolutions = ({ data, timezone }) => {
 };
 
 const styles = StyleSheet.create({
-  text: { color: "orange" }
-})
+  text: { color: "orange" },
+});
