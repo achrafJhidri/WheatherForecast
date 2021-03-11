@@ -1,8 +1,6 @@
 import React from "react";
 import {
-
   Layout,
-
   Divider,
 } from "@ui-kitten/components";
 import {
@@ -10,15 +8,13 @@ import {
   ActivityIndicator,
   ImageBackground,
 } from "react-native";
-
-
 import { Evolutions } from "./Evolutions.component";
-
 import { PrecipitationGraph } from "./PrecipitationsGraph.components";
 import { Previsions } from "./Previsions.component";
 import { useEffect, useState } from "react/cjs/react.development";
 import Header from "./FavoriteCard.component";
 
+const helper = require("../helper/getImage");
 
 export const Details = ({ data }) => {
   const [forecast, setForecast] = useState(null);
@@ -33,12 +29,19 @@ export const Details = ({ data }) => {
    
   }, [data]);
 
+  /* const getImage = () => {
+    console.log(forecast.current.dt-forecast.current.sunset)
+    console.log(Date.now());
+    if(forecast.current.dt >= forecast.current.sunrise && forecast.current.dt <= forecast.current.sunset )
+   return day;
+   return night;
+  } */
  
   if (isLoading) return <ActivityIndicator size="large" color="orange" />;
   return (
     <Layout style={styles.container}>
       <ImageBackground
-        source={require("../../assets/night.jpg")}
+        source={helper.getImage(forecast)}
         style={styles.image}
       >
         {/* <Card

@@ -22,6 +22,7 @@ import { getSampleWheather } from "../api/wheatherApi";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ImageBackground from "react-native/Libraries/Image/ImageBackground";
 import { DisplayError } from "./DisplayError.component";
+const helper = require("../helper/getImage");
 
 const FavoritsScreen = ({ navigation, favCities }) => {
   const [isRefreshing, setIsRefreshing] = useState(true);
@@ -130,7 +131,7 @@ const FavoritsScreen = ({ navigation, favCities }) => {
             renderItem={({ item }) => (
               <View style={{ margin: 20 /* backgroundColor: 'blue' */ }}>
                 <ImageBackground
-                  source={require("../../assets/night.jpg")}
+                  source={helper.getImage(item)}
                   imageStyle={{ borderRadius: 20 }}
                   style={styles.image}
                 >

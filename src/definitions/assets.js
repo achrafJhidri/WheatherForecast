@@ -29,5 +29,5 @@ export const assets = {
     backIcon,
     alertIcon,
     addIcon,
-  },
+  }
 };
