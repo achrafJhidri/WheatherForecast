@@ -1,7 +1,7 @@
 import React from "react";
-import { View, Text, FlatList, Image } from "react-native";
+import { View, FlatList, Image, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
-import { Button, Icon } from "@ui-kitten/components";
+import { Button, Icon, Text } from "@ui-kitten/components";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { ChevronRight, ChevronLeft } from "react-native-feather";
 
@@ -12,14 +12,14 @@ const imageUrl = "http://openweathermap.org/img/wn/";
 
 const ItemEvolution = ({ item }) => (
   <View style={{ alignItems: "center" }}>
-    <Text style={{ color: "white" }}>{item.id}</Text>
+    <Text style={styles.text}>{item.id}</Text>
     <Image
       style={{ width: 50, height: 50 }}
       source={{
         uri: imageUrl + item.icon + ".png",
       }}
     />
-    <Text style={{ color: "white" }}>{Math.round(item.temp)}°C</Text>
+    <Text style={styles.text}>{Math.round(item.temp)}°C</Text>
   </View>
 );
 
@@ -64,7 +64,6 @@ export const Evolutions = ({ data, timezone }) => {
   if (weathers.length > 0)
     return (
       <View style={{margin:15}}>
-        <Text category="h6">Evolution 24h</Text>
         <View
           style={{
             flexDirection: "row",
@@ -72,15 +71,7 @@ export const Evolutions = ({ data, timezone }) => {
             //alignSelf: "center",
           }}
         >
-          {/*  {displayLeftArrow} */}
-          {/* <Button
-            appearance="ghost"
-            size="tiny"
-            onPress={onBack}
-            accessoryLeft={leftArrow}
-            disabled={startIndex === 0}
 
-          /> */}
           <TouchableWithoutFeedback onPress={() => onBack()}>
             <ChevronLeft
               stroke={startIndex > 0 ? "white" : "grey"}
@@ -117,3 +108,7 @@ export const Evolutions = ({ data, timezone }) => {
       </View>
     );
 };
+
+const styles = StyleSheet.create({
+  text: { color: "orange" }
+})

@@ -60,7 +60,7 @@ export const PrecipitationGraph = ({ data, timezone }) => {
   if(labelHours.length > 0)
   return (
     <View style={{margin:15}}>
-      <Text category="s1" style={{alignSelf:'center', marginBottom: 5}}>Précipitations</Text>
+      <Text category="h6" style={{alignSelf:'center', }}>Précipitations</Text>
       <LineChart
         data={DATA}
         width={screenWidth -50}

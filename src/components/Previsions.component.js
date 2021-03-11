@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, SafeAreaView, ActivityIndicator } from "react-native";
+import { View, Text, Image, SafeAreaView, ActivityIndicator, StyleSheet } from "react-native";
 import { Card, Layout, List } from "@ui-kitten/components";
 import { useEffect, useState } from "react/cjs/react.development";
 import { ArrowDown, ArrowUp, Droplet, Umbrella } from "react-native-feather";
@@ -23,7 +23,7 @@ const renderPrevision = ({ item }) => (
         <Text style={{ flex: 1, color: "white" }}>{item.id}</Text>
         <View style={{ flex: 1 }}>
           <Image
-            style={{ width: 35, height: 35 }}
+            style={{ width: 38, height: 38 }}
             source={{
               uri: imageUrl + item.icon + ".png",
             }}
@@ -34,16 +34,16 @@ const renderPrevision = ({ item }) => (
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <View style={{ flexDirection: "row" }}>
-              <Umbrella stroke="white" />
-              <Text>{item.humidity}% </Text>
+              <Umbrella stroke="orange" />
+              <Text  style={styles.text}>{item.humidity}% </Text>
             </View>
             <View style={{ flexDirection: "row" }}>
-              <ArrowDown stroke="white" />
-              <Text>{Math.round(item.min)}°C</Text>
+              <ArrowDown stroke="orange" />
+              <Text style={styles.text}>{Math.round(item.min)}°C</Text>
             </View>
             <View style={{ flexDirection: "row" }}>
-              <ArrowUp stroke="white" />
-              <Text>{Math.round(item.max)}°C</Text>
+              <ArrowUp stroke="orange" />
+              <Text style={styles.text}>{Math.round(item.max)}°C</Text>
             </View>
           </View>
         </View>
@@ -73,8 +73,6 @@ export const Previsions = ({ data, timezone }) => {
   if (previsions.length > 0)
     return (
         <View style={{margin:15}} /* style={{flexGrow:1}} */>
-          <Text category="h6">Prévisions 7 jours</Text>
-
           <FlatList
             data={previsions}
             renderItem={renderPrevision}
@@ -85,3 +83,10 @@ export const Previsions = ({ data, timezone }) => {
     );
   else return <ActivityIndicator size="large" color="orange" />;
 };
+
+const styles= StyleSheet.create({
+  text: {
+    color: "white", 
+    marginLeft: 2
+  }
+})
