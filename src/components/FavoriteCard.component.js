@@ -27,7 +27,6 @@ const FavCard = ({ forecast, favCities, dispatch }) => {
   return (
     <View style={styles.container}>
       <View>
-        <TouchableOpacity /* onPress={() => onDetails()} */>
           <View style={styles.subContainer}>
             <Text category="h6" style={styles.text}>
               {forecast.city.id}
@@ -40,7 +39,6 @@ const FavCard = ({ forecast, favCities, dispatch }) => {
               °C
             </Text>
           </View>
-
           <View style={{ flexDirection: "row" }}>
             <View style={styles.iconText}>
               <Wind stroke="orange" />
@@ -59,7 +57,6 @@ const FavCard = ({ forecast, favCities, dispatch }) => {
               </Text>
             </View>
           </View>
-        </TouchableOpacity>
       </View>
       <View style={{ flex: 1, alignItems: "flex-end" }}>
         <TouchableOpacity onPress={() => toggleFav()}>

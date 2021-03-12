@@ -19,6 +19,7 @@ import { getSampleWheather } from "../api/wheatherApi";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import ImageBackground from "react-native/Libraries/Image/ImageBackground";
 import { DisplayError } from "./DisplayError.component";
+
 const helper = require("../helper/getImage");
 
 const FavoritsScreen = ({ navigation, favCities }) => {
@@ -37,7 +38,6 @@ const FavoritsScreen = ({ navigation, favCities }) => {
     let _weathers = [];
     try {
       if (new Date() - lastRefresh >= 3600000 || weathers.length === 0) {
-        console.log("1er", weathers.length);
         for (const city of favCities) {
           const location = { longitude: city.lon, latitude: city.lat };
           const forecast = await getSampleWheather(location);
@@ -74,7 +74,6 @@ const FavoritsScreen = ({ navigation, favCities }) => {
     } catch (error) {
       setIsError(true);
       setWeathers([]);
-      console.log(error);
     }
 
     setIsRefreshing(false);

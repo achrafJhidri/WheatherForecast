@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, View,Text } from "react-native";
 import {
   Divider,
   Layout,
@@ -12,14 +12,15 @@ import { getData} from "../storage/storage";
 import { DisplayError } from "./DisplayError.component";
 import { Details } from "./Details.compenent";
 import { getFullWheather } from "../api/wheatherApi";
+import { connect } from "react-redux";
 
-export const HomeScreen = ({ route, navigation }) => {
+
+ const HomeScreen = ({ route, navigation, favCities,dispatch }) => {
   const [error, setError] = useState({ isError: false, message: null });
   const [storedLocations, setStoredLocations] = useState([]); //this is the content you should share in the store
   //so that you have the list of favorit locations to show in FavoritScreen
   const [displayedLocation, setDisplayedLocation] = useState(null);
   const [forecast, setForecast] = useState(null); //the wheatherApi results are here /!\ it's async so use a Spinner
-  const [isLoading, setIsLoading] = useState(true);
 
 
   const navigateToFavorits = () => {
@@ -50,41 +51,32 @@ export const HomeScreen = ({ route, navigation }) => {
   }, [route.params]);
 
   useEffect(() => {
-    setIsLoading(true);
     getFullWheather(displayedLocation) //this is triggered whenever displayedLocation is set
       // so the page refresh and show the good result
       .then((result) => {
         setForecast(result);
-        setIsLoading(false);
       })
       .catch((error) => {
-        console.log(error);
       });
   }, [displayedLocation]);
 
   useEffect(() => {
     if (storedLocations.length > 0) {
       setError({ isError: false, message: "" });
-      setDisplayedLocation(storedLocations[0]);
+      setDisplayedLocation({latitude : storedLocations[0].lat , longitude : storedLocations[0].lon } );
     }
   }, [storedLocations]);
 
   useEffect(() => {}, [forecast]);
 
   const getStoredLocation = async () => {
-    await getData("localisations")
-      .then((tab) => {
-        let result = JSON.parse(tab);
-        setStoredLocations(result);
-        //this will trigger wheather api call
-      })
-      .catch((error) => {
-        //you'll get here if => Localisation is not authorized
-        handleError(
-          // this will redirect to SearchScreen
-          "location is not available  & no saved location => redirection in 3s"
-        );
-      });
+    if(favCities.length > 0){  
+        setStoredLocations(favCities);
+    }else
+    handleError(
+      // this will redirect to SearchScreen
+      "location is not available  & no saved location => redirection in 3s"
+    );
   };
 
   const handleError = (message) => {
@@ -106,13 +98,11 @@ export const HomeScreen = ({ route, navigation }) => {
         icon={assets.icons.searchIcon}
         onPress={navigateToSearch}
       />
-
     </React.Fragment>
   );
 
   const displayWheather = () => {
-    
-    if (isLoading) return <ActivityIndicator size="large" color="orange" />;
+    if (!forecast) return <ActivityIndicator size="large" color="orange" />;
     return <Details data={forecast} />;
   };
   const renderError = () => {
@@ -135,3 +125,10 @@ export const HomeScreen = ({ route, navigation }) => {
     </View>
   );
 };
+
+const mapStateToProps = (state) => {
+  return {
+    favCities: state.favCities,
+  };
+};
+export default connect(mapStateToProps)(HomeScreen);

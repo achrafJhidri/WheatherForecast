@@ -10,35 +10,33 @@ import Header from "./FavoriteCard.component";
 const helper = require("../helper/getImage");
 
 export const Details = ({ data }) => {
-  const [forecast, setForecast] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    setIsLoading(true);
-    async function setter() {
-      if (data) setForecast(data);
-      setIsLoading(false);
-    }
-    setter();
+    if (!data) setIsLoading(true);
+    else 
+    setIsLoading(false)
   }, [data]);
 
   if (isLoading) return <ActivityIndicator size="large" color="orange" />;
+  else 
   return (
     <Layout style={styles.container}>
-      <ImageBackground source={helper.getImage(forecast)} style={styles.image}>
+      <ImageBackground source={helper.getImage(data)} style={styles.image}>
         <Header forecast={data} />
         <Divider />
 
         <PrecipitationGraph
-          data={forecast.minutely}
-          timezone={forecast.timezone_offset}
+          data={data.minutely}
+          timezone={data.timezone_offset}
         />
 
         <Evolutions
-          data={forecast.hourly}
-          timezone={forecast.timezone_offset}
+          data={data.hourly}
+          timezone={data.timezone_offset}
         />
 
-        <Previsions data={forecast.daily} timezone={forecast.timezone_offset} />
+        <Previsions data={data.daily} timezone={data.timezone_offset} />
       </ImageBackground>
     </Layout>
   );

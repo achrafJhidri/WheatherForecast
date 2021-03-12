@@ -22,8 +22,6 @@ export const PrecipitationGraph = ({ data, timezone }) => {
   const [labelHours, setLabelHours] = useState([]);
   const [datasets, setDataset] = useState([]);
   useEffect(() => {
- 
-
     const labels = [];
     const precipitations = [];
     if (Array.isArray(data)) {

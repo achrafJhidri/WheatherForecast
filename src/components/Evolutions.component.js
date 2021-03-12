@@ -2,10 +2,7 @@ import React from "react";
 import { View, FlatList, Image, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import { Text } from "@ui-kitten/components";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { ChevronRight, ChevronLeft } from "react-native-feather";
 
-const Intl = require("react-native-intl");
 const imageUrl = "http://openweathermap.org/img/wn/";
 
 const ItemEvolution = ({ item }) => (
@@ -22,7 +19,6 @@ const ItemEvolution = ({ item }) => (
 );
 
 export const Evolutions = ({ data, timezone }) => {
-  const [startIndex, setStartIndex] = useState(0);
   const [weathers, setWeathers] = useState([]);
 
   useEffect(() => {
@@ -44,55 +40,16 @@ export const Evolutions = ({ data, timezone }) => {
     }
   }, [data]);
 
-  const weatherToShow = () => {
-    return weathers.slice(startIndex, startIndex + 4);
-  };
-
-  const onForward = () => {
-    if (startIndex + 5 <= weathers.length) {
-      setStartIndex(startIndex + 1);
-    }
-  };
-
-  const onBack = () => {
-    if (startIndex > 0) setStartIndex(startIndex - 1);
-  };
-
   if (weathers.length > 0)
     return (
       <View style={{ margin: 15 }}>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <TouchableWithoutFeedback onPress={() => onBack()}>
-            <ChevronLeft
-              stroke={startIndex > 0 ? "white" : "grey"}
-              width={42}
-              height={42}
-            />
-          </TouchableWithoutFeedback>
           <FlatList
             horizontal
-            data={weatherToShow()}
+            data={weathers}
             renderItem={ItemEvolution}
             keyExtractor={(item) => item.id}
-            contentContainerStyle={{
-              justifyContent: "space-between",
-              flex: 1,
-            }}
+          
           />
-
-          <TouchableWithoutFeedback onPress={() => onForward()}>
-            <ChevronRight
-              stroke={startIndex + 4 < weathers.length ? "white" : "grey"}
-              width={42}
-              height={42}
-            />
-          </TouchableWithoutFeedback>
-        </View>
       </View>
     );
   else

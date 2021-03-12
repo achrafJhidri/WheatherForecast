@@ -2,9 +2,7 @@ const night = require("../../assets/night.jpg");
 const day = require("../../assets/day.jpg");
 
 exports.getImage = (forecast) => {
-  console.log(forecast.current.dt - forecast.current.sunset);
-  console.log(Date.now());
-  if (
+  if ( forecast && 
     forecast.current.dt >= forecast.current.sunrise &&
     forecast.current.dt <= forecast.current.sunset
   )
