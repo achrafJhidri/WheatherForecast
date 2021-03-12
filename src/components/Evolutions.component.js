@@ -45,7 +45,7 @@ export const Evolutions = ({ data, timezone }) => {
   }, [data]);
 
   const weatherToShow = () => {
-    return weathers.slice(startIndex, startIndex + 4);
+    return weathers;
   };
 
   const onForward = () => {
@@ -61,7 +61,13 @@ export const Evolutions = ({ data, timezone }) => {
   if (weathers.length > 0)
     return (
       <View style={{ margin: 15 }}>
-        <View
+        <FlatList
+            horizontal={true}
+            data={weatherToShow()}
+            renderItem={ItemEvolution}
+            keyExtractor={(item) => item.id}
+          />
+        {/* <View
           style={{
             flexDirection: "row",
             alignItems: "center",
@@ -74,16 +80,7 @@ export const Evolutions = ({ data, timezone }) => {
               height={42}
             />
           </TouchableWithoutFeedback>
-          <FlatList
-            horizontal
-            data={weatherToShow()}
-            renderItem={ItemEvolution}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={{
-              justifyContent: "space-between",
-              flex: 1,
-            }}
-          />
+          
 
           <TouchableWithoutFeedback onPress={() => onForward()}>
             <ChevronRight
@@ -92,7 +89,7 @@ export const Evolutions = ({ data, timezone }) => {
               height={42}
             />
           </TouchableWithoutFeedback>
-        </View>
+        </View> */}
       </View>
     );
   else
