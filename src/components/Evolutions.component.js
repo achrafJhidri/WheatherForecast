@@ -6,7 +6,7 @@ import { Text } from "@ui-kitten/components";
 const imageUrl = "http://openweathermap.org/img/wn/";
 
 const ItemEvolution = ({ item }) => (
-  <View style={{ alignItems: "center" }}>
+  <View style={{ alignItems: "center", marginRight: 30 }}>
     <Text style={styles.text}>{item.id}</Text>
     <Image
       style={{ width: 50, height: 50 }}
